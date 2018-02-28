@@ -5,13 +5,13 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LocationItemRepository")
- * @ORMTable(name="")
+ * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
+ * @ORMTable(name="Location")
  * @ORMInheritanceType("JOINED")
  * @ORMDiscriminatorColumn(name="provider", type="string")
  * @ORMDiscriminatorMap( {"foursquare" = "FourSquareLocation", "timeout" = "TimeoutLocation", "viator" = "ViatorLocation"} )
  */
-abstract class LocationItem
+abstract class Location
 {
     /**
      * @ORM\Id
@@ -60,7 +60,7 @@ abstract class LocationItem
 
     /**
      * @param mixed $latitude
-     * @return LocationItem
+     * @return Location
      */
     public function setLatitude($latitude)
     {
@@ -78,13 +78,14 @@ abstract class LocationItem
 
     /**
      * @param mixed $longitude
-     * @return LocationItem
+     * @return Location
      */
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
         return $this;
     }
+
 
     /**
      * @return mixed
@@ -96,7 +97,7 @@ abstract class LocationItem
 
     /**
      * @param mixed $name
-     * @return LocationItem
+     * @return Location
      */
     public function setName($name)
     {
@@ -114,7 +115,7 @@ abstract class LocationItem
 
     /**
      * @param mixed $created
-     * @return LocationItem
+     * @return Location
      */
     public function setCreated($created)
     {
@@ -132,7 +133,7 @@ abstract class LocationItem
 
     /**
      * @param mixed $updated
-     * @return LocationItem
+     * @return Location
      */
     public function setUpdated($updated)
     {
@@ -150,7 +151,7 @@ abstract class LocationItem
 
     /**
      * @param mixed $locationName
-     * @return LocationItem
+     * @return Location
      */
     public function setLocationName($locationName)
     {
