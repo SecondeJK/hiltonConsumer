@@ -11,7 +11,7 @@ class TestController
       *
       * @Route("/")
       */
-    public function number()
+    public function testApp()
     {
         return new Response(
             '<html><body>TEST ROUTE: APP ENABLED</body></html>'
