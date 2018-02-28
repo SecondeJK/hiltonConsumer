@@ -1,146 +1,77 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class TimeoutLocation
+ * @package App\Entity
+ * @ORM\Entity
+ */
 class TimeoutLocation extends Location
 {
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=200)
      */
-    private $address;
+    protected $description;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=200)
      */
-    private $category;
+    protected $address;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=200)
      */
-    private $link;
+    protected $category;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    protected $duration;
+
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    protected $link;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $rating;
+    protected $rating;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="decimal")
      */
-    private $price;
+    protected $rating_count;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=20)
      */
-    private $image;
+    protected $price;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="string", length=200)
      */
-    public function getAddress()
-    {
-        return $this->address;
-    }
+    protected $imageThumb;
 
     /**
-     * @param mixed $address
-     * @return TimeoutLocation
+     * @ORM\Column(type="string", length=200)
      */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-        return $this;
-    }
+    protected $imageLarge;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="boolean")
      */
-    public function getCategory()
-    {
-        return $this->category;
-    }
+    protected $featured;
 
     /**
-     * @param mixed $category
-     * @return TimeoutLocation
+     * @ORM\Column(type="date")
      */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-        return $this;
-    }
+    protected $startDate;
 
     /**
-     * @return mixed
+     * @ORM\Column(type="date")
      */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * @param mixed $link
-     * @return TimeoutLocation
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRating()
-    {
-        return $this->rating;
-    }
-
-    /**
-     * @param mixed $rating
-     * @return TimeoutLocation
-     */
-    public function setRating($rating)
-    {
-        $this->rating = $rating;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param mixed $price
-     * @return TimeoutLocation
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $image
-     * @return TimeoutLocation
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-        return $this;
-    }
+    protected $endDate;
 }

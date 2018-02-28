@@ -8,7 +8,6 @@ build:
 	@echo 'Build successful'
 
 start:
-	@bin/console server:start
 	@docker-compose up --abort-on-container-exit
 
 clean:

@@ -1,146 +1,43 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * Class FourSquareLocation
+ *
+ * @package App\Entity
+ * @ORM\Entity
+ */
 class FourSquareLocation extends Location
 {
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $address;
+    protected $address;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $category;
+    protected $category;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=200, nullable=true)
      */
-    private $link;
+    protected $link;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
-    private $rating;
+    protected $rating;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $price;
+    protected $price;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=200, nullable=true)
      */
-    private $image;
-
-    /**
-     * @return mixed
-     */
-    public function getAddress()
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param mixed $address
-     * @return FourSquareLocation
-     */
-    public function setAddress($address)
-    {
-        $this->address = $address;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param mixed $category
-     * @return FourSquareLocation
-     */
-    public function setCategory($category)
-    {
-        $this->category = $category;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
-     * @param mixed $link
-     * @return FourSquareLocation
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRating()
-    {
-        return $this->rating;
-    }
-
-    /**
-     * @param mixed $rating
-     * @return FourSquareLocation
-     */
-    public function setRating($rating)
-    {
-        $this->rating = $rating;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param mixed $price
-     * @return FourSquareLocation
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getImage()
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param mixed $image
-     * @return FourSquareLocation
-     */
-    public function setImage($image)
-    {
-        $this->image = $image;
-        return $this;
-    }
+    protected $image;
 }

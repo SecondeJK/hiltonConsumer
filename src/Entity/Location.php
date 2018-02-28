@@ -5,49 +5,54 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
+ * @ORM\Entity
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="provider", type="string")
- * @ORM\DiscriminatorMap( {"foursquare" = "FourSquareLocation", "timeout" = "TimeoutLocation", "viator" = "ViatorLocation"} )
+ * @ORM\DiscriminatorMap(
+ *     {
+ *       "timeoutlocation" = "TimeoutLocation",
+ *       "foursqaurelocation" = "FourSquareLocation",
+ *       "viatorlocation" = "ViatorLocation"
+ *     })
  */
 abstract class Location
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=100))
      */
-    private $name;
+    protected $name;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $created;
+    protected $created;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
-    private $updated;
+    protected $updated;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private $locationName;
+    protected $locationName;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", nullable=true)
      */
-    private $latitude;
+    protected $latitude;
 
     /**
-     * @ORM\Column(type="decimal")
+     * @ORM\Column(type="decimal", nullable=true)
      */
-    private $longitude;
+    protected $longitude;
 
     /**
      * @return mixed
