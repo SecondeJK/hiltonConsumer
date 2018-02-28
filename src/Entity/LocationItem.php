@@ -6,12 +6,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocationItemRepository")
+ * @ORMTable(name="")
+ * @ORMInheritanceType("JOINED")
+ * @ORMDiscriminatorColumn(name="provider", type="string")
+ * @ORMDiscriminatorMap( {"foursquare" = "FourSquareLocation", "timeout" = "TimeoutLocation", "viator" = "ViatorLocation"} )
  */
-class LocationItem
+abstract class LocationItem
 {
     /**
      * @ORM\Id
-     * @ORM\GeneratedValue
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -37,20 +41,48 @@ class LocationItem
     private $locationName;
 
     /**
+     * @ORM\Column(type="decimal")
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="decimal")
+     */
+    private $longitude;
+
+    /**
      * @return mixed
      */
-    public function getId()
+    public function getLatitude()
     {
-        return $this->id;
+        return $this->latitude;
     }
 
     /**
-     * @param mixed $id
+     * @param mixed $latitude
      * @return LocationItem
      */
-    public function setId($id)
+    public function setLatitude($latitude)
     {
-        $this->id = $id;
+        $this->latitude = $latitude;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param mixed $longitude
+     * @return LocationItem
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
         return $this;
     }
 
