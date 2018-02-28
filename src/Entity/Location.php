@@ -6,10 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LocationRepository")
- * @ORMTable(name="Location")
- * @ORMInheritanceType("JOINED")
- * @ORMDiscriminatorColumn(name="provider", type="string")
- * @ORMDiscriminatorMap( {"foursquare" = "FourSquareLocation", "timeout" = "TimeoutLocation", "viator" = "ViatorLocation"} )
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="provider", type="string")
+ * @ORM\DiscriminatorMap( {"foursquare" = "FourSquareLocation", "timeout" = "TimeoutLocation", "viator" = "ViatorLocation"} )
  */
 abstract class Location
 {
