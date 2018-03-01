@@ -2,10 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\FourSquareLocation;
-use App\Entity\Location;
 use App\Entity\TimeoutLocation;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\Console\Command\Command;
@@ -26,7 +23,7 @@ class AppGenerateFixturesCommand extends Command
 
     protected function configure()
     {
-        $this->setDescription('Generates some fixtures to test db mapping functionality');
+        $this->setDescription('Generates fixture to test db mapping functionality');
     }
     public function __construct(EntityManagerInterface $em)
     {
@@ -43,7 +40,6 @@ class AppGenerateFixturesCommand extends Command
         $testLocation->setLocationName('Birmingham');
         $testLocation->setCreated(new \DateTime());
         $testLocation->setUpdated(new \DateTime());
-        $testLocation->setTestField('fuckin horray yall');
 
         try {
             $this->em->persist($testLocation);
