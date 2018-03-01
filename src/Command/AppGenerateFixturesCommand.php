@@ -25,6 +25,7 @@ class AppGenerateFixturesCommand extends Command
     {
         $this->setDescription('Generates fixture to test db mapping functionality');
     }
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
