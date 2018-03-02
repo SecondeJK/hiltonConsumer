@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Feed;
 use App\Entity\TimeoutLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
@@ -42,6 +43,8 @@ class AppGenerateFixturesCommand extends Command
         $testLocation->setCreated(new \DateTime());
         $testLocation->setUpdated(new \DateTime());
 
+        $this->addTestFixtureFeeds();
+
         try {
             $this->em->persist($testLocation);
             $this->em->flush();
@@ -51,5 +54,53 @@ class AppGenerateFixturesCommand extends Command
         }
 
         $io->success('Finished Command');
+    }
+
+    protected function addTestFixtureFeeds(): void
+    {
+        foreach ($this->returnTestFeedsConfig() as $feedFixture) {
+            $feedEntity = new Feed();
+            $feedEntity->setLocationName($feedFixture['locationName']);
+            $feedEntity->setLocationApiString($feedFixture['locationApiString']);
+            $feedEntity->setProvider($feedFixture['provider']);
+            $this->em->persist($feedEntity);
+        }
+        $this->em->flush();
+    }
+
+    private function returnTestFeedsConfig(): array
+    {
+        return [
+            [
+                'locationName' => 'London',
+                'locationApiString' => 'uk-london',
+                'provider' => 'foursquare'
+            ],
+            [
+                'locationName' => 'London',
+                'locationApiString' => 'uk-london',
+                'provider' => 'viator'
+            ],
+            [
+                'locationName' => 'London',
+                'locationApiString' => 'london-uk',
+                'provider' => 'timeout'
+            ],
+            [
+                'locationName' => 'New York',
+                'locationApiString' => 'usa-nycny',
+                'provider' => 'foursquare'
+            ],
+            [
+                'locationName' => 'New York',
+                'locationApiString' => 'usa-nycny',
+                'provider' => 'viator'
+            ],
+            [
+                'locationName' => 'New York',
+                'locationApiString' => 'new-york-ny-usa',
+                'provider' => 'timeout'
+            ],
+        ];
     }
 }
