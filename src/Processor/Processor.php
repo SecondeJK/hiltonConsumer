@@ -7,6 +7,10 @@ use App\Interfaces\ProcessorInterface;
 
 abstract class Processor implements ProcessorInterface
 {
+    protected $clientCode;
+
+    protected $locations = null;
+
     protected $apiClient;
 
     protected $baseUrl;
@@ -19,6 +23,10 @@ abstract class Processor implements ProcessorInterface
 
     public function process()
     {
-        // Method to overload
+        return $this->apiClient->returnArrayStructureFromApiCall($this->fullUrlString());
+    }
+
+    public function fullUrlString(): string
+    {
     }
 }

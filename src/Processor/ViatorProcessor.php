@@ -6,8 +6,5 @@ use App\ApiClient\ApiClient;
 
 class ViatorProcessor extends Processor
 {
-    public function process()
-    {
-        echo 'Processing Viator';
-    }
+    protected $clientCode = 'via';
 }

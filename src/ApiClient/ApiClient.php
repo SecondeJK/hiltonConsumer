@@ -5,11 +5,14 @@ use GuzzleHttp\Client;
 
 class ApiClient
 {
-    public function returnBodyFromApiCall(string $url)
+    public function returnArrayStructureFromApiCall(string $url)
     {
         $client = new Client();
         $result = $client->request('GET', $url);
-
-        return $result->getBody();
+        if ($result->getStatusCode() === 200) {
+            return json_decode($result->getBody(), true);
+        } else {
+            throw new \ErrorException("Bad Request to API");
+        }
     }
 }
