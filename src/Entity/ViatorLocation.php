@@ -36,7 +36,7 @@ class ViatorLocation extends Location
     protected $ratingCount;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=200, nullable=true)
      */
     protected $price;
 

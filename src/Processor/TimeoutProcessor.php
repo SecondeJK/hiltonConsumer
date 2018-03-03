@@ -53,8 +53,8 @@ class TimeoutProcessor extends Processor
         $entity->setImage($location['image']);
         $entity->setImageDynamic($location['image_dynamic']);
         $entity->setFeatured($location['featured']);
-        $entity->setStartDate($location['start_date']);
-        $entity->setEndDate($location['end_date']);
+        $entity->setStartDate(new \DateTime($location['start_date']));
+        $entity->setEndDate(new \DateTime($location['end_date']));
 
         $this->em->persist($entity);
     }

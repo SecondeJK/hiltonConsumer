@@ -51,8 +51,8 @@ class ViatorProcessor extends Processor
         $entity->setImageThumb($location['image_thumb']);
         $entity->setImageLarge($location['image_large']);
         $entity->setFeatured($location['featured']);
-        $entity->setStartDate($location['start_date']);
-        $entity->setEndDate($location['end_date']);
+        $entity->setStartDate(new \DateTime($location['start_date']));
+        $entity->setEndDate(new \DateTime($location['end_date']));
     }
 
     static function generateProcessorEntity()
