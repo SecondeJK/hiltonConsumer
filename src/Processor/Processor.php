@@ -61,14 +61,25 @@ abstract class Processor implements ProcessorInterface
         $this->em = $em;
     }
 
-    /**
-     * Stub to extend to specific processing power per entity
-     *
-     * @param Feed $feed
-     */
     public function process(Feed $feed): void
     {
-        return;
+        $this->feed = $feed;
+        $result = $this->apiClient->makeApiCall($this->resolveFullUrl());
+
+        $metaLocation = array_column($result, 'location');
+        $metaLocation = array_shift($metaLocation);
+        $this->dateCreated = $metaLocation['created'];
+        $this->dateUpdated = $metaLocation['updated'];
+
+        $locationsToProcess = array_column($result, 'locations');
+
+        // Some massaging required here
+        $locationsToProcess = array_shift($locationsToProcess);
+
+        foreach ($locationsToProcess as $location) {
+            $this->persistEntityFromLocation($location);
+        }
+        $this->em->flush();
     }
 
     /**
