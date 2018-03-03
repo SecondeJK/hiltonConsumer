@@ -2,6 +2,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
   app.baseurl: https://content-api.hiltonapps.com/v1/places/top-places
+  app.authtoken: jobs383-UgWfVvxQXNhDQLw4v
 
 services:
     # default configuration for services in *this* file
@@ -20,38 +21,36 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-
     App\Processor\FourSquareProcessor:
         autowire: false
         autoconfigure: false
         public: true
-        parent: App\Processor
+        parent: App\Processor\Processor
         tags: [app.processor.service]
 
     App\Processor\ViatorProcessor:
         autowire: false
         autoconfigure: false
         public: true
-        parent: App\Processor
+        parent: App\Processor\Processor
         tags: [app.processor.service]
 
     App\Processor\TimeoutProcessor:
         autowire: false
         autoconfigure: false
         public: true
-        parent: App\Processor
+        parent: App\Processor\Processor
         tags: [app.processor.service]
+
+    App\Processor\Processor:
+        autowire: false
+        autoconfigure: false
+        public: true
+        abstract:  true
+        arguments: ['%app.baseurl%', '@App\ApiClient\ApiClient', '%app.authtoken%', '@doctrine.orm.entity_manager']
 
     App\Processor\ProcessorRunner:
         autowire: false
         autoconfigure: false
         public: true
         arguments: [!tagged app.processor.service]
-
-    App\Processor:
-        autowire: false
-        autoconfigure: false
-        public: true
-        class: App\Processor\Processor
-        abstract:  true
-        arguments: ['%app.baseurl%', '@App\ApiClient\ApiClient']

@@ -1,10 +1,27 @@
 <?php
-
 namespace App\Processor;
 
-use App\ApiClient\ApiClient;
+use App\Entity\Feed;
 
 class ViatorProcessor extends Processor
 {
-    protected $clientCode = 'via';
+    static function providerName(): string
+    {
+        return 'via';
+    }
+
+    public function process(Feed $feed): void
+    {
+
+    }
+
+    public function persistEntityFromLocation(array $location): void
+    {
+        // TODO: Implement persistEntityFromLocation() method.
+    }
+
+    static function generateProcessorEntity()
+    {
+        // TODO: Implement generateProcessorEntity() method.
+    }
 }

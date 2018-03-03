@@ -37,21 +37,21 @@ class AppGenerateFixturesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $testLocation = new TimeoutLocation();
-        $testLocation->setName('Test Entity');
-        $testLocation->setLocationName('Birmingham');
-        $testLocation->setCreated(new \DateTime());
-        $testLocation->setUpdated(new \DateTime());
+//        $testLocation = new TimeoutLocation();
+//        $testLocation->setName('Test Entity');
+//        $testLocation->setLocationName('Birmingham');
+//        $testLocation->setCreated(new \DateTime());
+//        $testLocation->setUpdated(new \DateTime());
 
         $this->addTestFixtureFeeds();
 
-        try {
-            $this->em->persist($testLocation);
-            $this->em->flush();
-        } catch (ORMException $e) {
-            $io->error('Failed to persist test object with error: '. $e);
-            return;
-        }
+//        try {
+//            $this->em->persist($testLocation);
+//            $this->em->flush();
+//        } catch (ORMException $e) {
+//            $io->error('Failed to persist test object with error: '. $e);
+//            return;
+//        }
 
         $io->success('Finished Command');
     }
@@ -74,12 +74,12 @@ class AppGenerateFixturesCommand extends Command
             [
                 'locationName' => 'London',
                 'locationApiString' => 'uk-london',
-                'provider' => 'foursquare'
+                'provider' => 'fsq'
             ],
             [
                 'locationName' => 'London',
                 'locationApiString' => 'uk-london',
-                'provider' => 'viator'
+                'provider' => 'via'
             ],
             [
                 'locationName' => 'London',
@@ -89,12 +89,12 @@ class AppGenerateFixturesCommand extends Command
             [
                 'locationName' => 'New York',
                 'locationApiString' => 'usa-nycny',
-                'provider' => 'foursquare'
+                'provider' => 'fsq'
             ],
             [
                 'locationName' => 'New York',
                 'locationApiString' => 'usa-nycny',
-                'provider' => 'viator'
+                'provider' => 'via'
             ],
             [
                 'locationName' => 'New York',

@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Processor;
+
+use App\Entity\Feed;
 
 /**
  * Runner for all processors using service tags app.processor
@@ -9,16 +10,17 @@ namespace App\Processor;
 class ProcessorRunner
 {
     private $processors;
-
     public function __construct(iterable $processors)
     {
         $this->processors = $processors;
     }
-
-    public function execute()
+    public function processFeed(Feed $feed)
     {
         foreach ($this->processors as $processor) {
-            $processor->process();
+            if ($feed->getProvider() == $processor::providerName())
+            {
+                $processor->process($feed);
+            }
         }
     }
 }

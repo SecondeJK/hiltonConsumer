@@ -5,7 +5,7 @@ use GuzzleHttp\Client;
 
 class ApiClient
 {
-    public function returnArrayStructureFromApiCall(string $url)
+    public function makeApiCall(string $url)
     {
         $client = new Client();
         $result = $client->request('GET', $url);
