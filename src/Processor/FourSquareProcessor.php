@@ -37,6 +37,7 @@ class FourSquareProcessor extends Processor
         foreach ($locationsToProcess as $location) {
             $this->persistEntityFromLocation($location);
         }
+        $this->em->flush();
     }
 
     public function persistEntityFromLocation(array $location): void
