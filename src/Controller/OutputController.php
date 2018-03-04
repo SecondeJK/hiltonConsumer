@@ -4,10 +4,14 @@ namespace App\Controller;
 use App\Repository\FourSquareLocationRepository;
 use App\Repository\TimeoutLocationRepository;
 use App\Repository\ViatorLocationRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations as FOSRest;
 
+/**
+ * @Route("/")
+ */
 class OutputController
 {
     /**
@@ -33,12 +37,11 @@ class OutputController
     }
 
     /**
-      * @Route("/api/v1/")
+      * @FOSRest\Get("/api/v1/all")
       */
-    public function outputAllFeed()
+    public function outputAllAction()
     {
         $returnArray = $this->fourSquareLocationRepository->findAll();
-        dump($returnArray);
-        return new Response('Endpoint');
+        return View::create($returnArray, Response::HTTP_OK , []);
     }
 }
