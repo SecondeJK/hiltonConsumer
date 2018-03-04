@@ -8,6 +8,7 @@ use App\Repository\FourSquareLocationRepository;
 use App\Repository\TimeoutLocationRepository;
 use App\Repository\ViatorLocationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,7 +42,7 @@ class OutputController extends Controller
     {
         $this->serializerResponseData = [];
 
-        $this->buildOutputFromQueryParameters();
+        $this->buildOutputFromQueryParameters($request->query);
 
         return $this->renderResponse();
     }
@@ -69,11 +70,30 @@ class OutputController extends Controller
 
     /**
      *  Build the data to serialize by iterating through service tagged repositories and serializing the response
+     *  This method currently smells and needs better sanitation because it's rushed
+     *
+     * @param ParameterBag $query
+     * @throws \ErrorException
      */
-    protected function buildOutputFromQueryParameters()
+    protected function buildOutputFromQueryParameters(ParameterBag $query)
     {
-        foreach ($this->repositories as $repository) {
-            $this->serializerResponseData = array_merge($this->serializerResponseData, $repository->findAll());
+        $urlQueryString = $query->all();
+
+        if (!$urlQueryString) {
+            foreach ($this->repositories as $repository) {
+                $this->serializerResponseData = array_merge($this->serializerResponseData, $repository->findAll());
+            }
+        } else {
+            // check if the inputs are valid
+            if (!array_key_exists('locationName', $urlQueryString))
+            {
+                throw new \ErrorException('User Error: Did not enter valid query parameters: Can only enter locationName');
+            } else {
+                // otherwise inject the parameters into doctrine find by
+                foreach ($this->repositories as $repository) {
+                    $this->serializerResponseData = array_merge($this->serializerResponseData, $repository->findBy($urlQueryString));
+                }
+            }
         }
 
         $serializer = $this->get('jms_serializer');
