@@ -4,15 +4,12 @@ namespace App\Controller;
 use App\Repository\FourSquareLocationRepository;
 use App\Repository\TimeoutLocationRepository;
 use App\Repository\ViatorLocationRepository;
-use FOS\RestBundle\View\View;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use FOS\RestBundle\Controller\Annotations as FOSRest;
 
-/**
- * @Route("/")
- */
-class OutputController
+class OutputController extends Controller
 {
     /**
      * @var FourSquareLocationRepository
@@ -29,6 +26,18 @@ class OutputController
      */
     private $viatorLocationRepository;
 
+    /**
+     * Contains Array of Serialized Objects
+     * @var array
+     */
+    private $serializerResponseData;
+
+    /**
+     * OutputController constructor.
+     * @param FourSquareLocationRepository $fourSquareLocationRepository
+     * @param TimeoutLocationRepository $timeoutLocationRepository
+     * @param ViatorLocationRepository $viatorLocationRepository
+     */
     public function __construct(FourSquareLocationRepository $fourSquareLocationRepository, TimeoutLocationRepository $timeoutLocationRepository, ViatorLocationRepository $viatorLocationRepository)
     {
         $this->fourSquareLocationRepository = $fourSquareLocationRepository;
@@ -37,11 +46,27 @@ class OutputController
     }
 
     /**
-      * @FOSRest\Get("/api/v1/all")
+      * @Route("/api/v1/all")
       */
-    public function outputAllAction()
+    public function outputAllAction(Request $request)
     {
-        $returnArray = $this->fourSquareLocationRepository->findAll();
-        return View::create($returnArray, Response::HTTP_OK , []);
+        $this->serializerResponseData = $this->fourSquareLocationRepository->findAll();
+        $serializer = $this->get('jms_serializer');
+        $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
+        return $this->renderResponse();
+    }
+
+    protected function renderResponse()
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'application/json');
+        $response->setContent($this->serializerResponseData);
+        $response->setStatusCode($this->assertApiRequestStatusCode());
+        return $response;
+    }
+
+    protected function assertApiRequestStatusCode()
+    {
+        return Response::HTTP_OK;
     }
 }

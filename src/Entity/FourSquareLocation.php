@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Serializer as Serializer;
 
 /**
  * Class FourSquareLocation
