@@ -1,6 +1,9 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\FourSquareLocation;
+use App\Entity\TimeoutLocation;
+use App\Entity\ViatorLocation;
 use App\Repository\FourSquareLocationRepository;
 use App\Repository\TimeoutLocationRepository;
 use App\Repository\ViatorLocationRepository;
@@ -12,19 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 class OutputController extends Controller
 {
     /**
-     * @var FourSquareLocationRepository
+     * @var Iterable
      */
-    private $fourSquareLocationRepository;
-
-    /**
-     * @var TimeoutLocationRepository
-     */
-    private $timeoutLocationRepository;
-
-    /**
-     * @var ViatorLocationRepository
-     */
-    private $viatorLocationRepository;
+    private $repositories;
 
     /**
      * Contains Array of Serialized Objects
@@ -34,15 +27,11 @@ class OutputController extends Controller
 
     /**
      * OutputController constructor.
-     * @param FourSquareLocationRepository $fourSquareLocationRepository
-     * @param TimeoutLocationRepository $timeoutLocationRepository
-     * @param ViatorLocationRepository $viatorLocationRepository
+     * @param iterable $repositories
      */
-    public function __construct(FourSquareLocationRepository $fourSquareLocationRepository, TimeoutLocationRepository $timeoutLocationRepository, ViatorLocationRepository $viatorLocationRepository)
+    public function __construct(iterable $repositories)
     {
-        $this->fourSquareLocationRepository = $fourSquareLocationRepository;
-        $this->timeoutLocationRepository = $timeoutLocationRepository;
-        $this->viatorLocationRepository = $viatorLocationRepository;
+        $this->repositories = $repositories;
     }
 
     /**
@@ -50,9 +39,10 @@ class OutputController extends Controller
       */
     public function outputAllAction(Request $request)
     {
-        $this->serializerResponseData = $this->fourSquareLocationRepository->findAll();
-        $serializer = $this->get('jms_serializer');
-        $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
+        $this->serializerResponseData = [];
+
+        $this->buildOutputFromQueryParameters();
+
         return $this->renderResponse();
     }
 
@@ -65,8 +55,28 @@ class OutputController extends Controller
         return $response;
     }
 
+    /**
+     * We set HTTP headers in here and not in the serialized meta response as
+     * that makes no sense to 200 with a 403 return
+     *
+     * @return int
+     */
     protected function assertApiRequestStatusCode()
     {
+        // TODO: logic
         return Response::HTTP_OK;
+    }
+
+    /**
+     *  Build the data to serialize by iterating through service tagged repositories and serializing the response
+     */
+    protected function buildOutputFromQueryParameters()
+    {
+        foreach ($this->repositories as $repository) {
+            $this->serializerResponseData = array_merge($this->serializerResponseData, $repository->findAll());
+        }
+
+        $serializer = $this->get('jms_serializer');
+        $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
     }
 }

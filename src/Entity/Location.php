@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\DiscriminatorMap(
  *     {
  *       "timeoutlocation" = "TimeoutLocation",
- *       "foursqaurelocation" = "FourSquareLocation",
+ *       "foursquarelocation" = "FourSquareLocation",
  *       "viatorlocation" = "ViatorLocation"
  *     })
  */

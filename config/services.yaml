@@ -21,9 +21,7 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-#    sensio_framework_extra.view.listener:
-#        alias: Sensio\Bundle\FrameworkExtraBundle\EventListener\TemplateListener
-
+#   Processing Classes
     App\Processor\FourSquareProcessor:
         autowire: false
         autoconfigure: false
@@ -58,3 +56,27 @@ services:
         public: true
         arguments: [!tagged app.processor.service]
 
+#   Output Classes
+    App\Repository\FourSquareLocationRepository:
+        autowire: true
+        autoconfigure: false
+        public: true
+        tags: [app.output.repository.service]
+
+    App\Repository\TimeoutLocationRepository:
+        autowire: true
+        autoconfigure: false
+        public: true
+        tags: [app.output.repository.service]
+
+    App\Repository\ViatorLocationRepository:
+        autowire: true
+        autoconfigure: false
+        public: true
+        tags: [app.output.repository.service]
+
+    App\Controller\OutputController:
+        autowire: false
+        autoconfigure: false
+        public: true
+        arguments: [!tagged app.output.repository.service]

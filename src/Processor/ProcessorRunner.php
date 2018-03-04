@@ -10,6 +10,7 @@ use App\Entity\Feed;
 class ProcessorRunner
 {
     private $processors;
+
     public function __construct(iterable $processors)
     {
         $this->processors = $processors;
