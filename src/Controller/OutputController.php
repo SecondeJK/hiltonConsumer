@@ -13,6 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class OutputController
+ * @package App\Controller
+ */
 class OutputController extends Controller
 {
     const SORT_ASC = 'asc';
@@ -66,6 +70,9 @@ class OutputController extends Controller
         return $this->renderResponse();
     }
 
+    /**
+     * @return Response
+     */
     public function renderResponse()
     {
         $response = new Response();

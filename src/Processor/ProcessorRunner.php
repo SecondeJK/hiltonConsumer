@@ -9,12 +9,23 @@ use App\Entity\Feed;
  */
 class ProcessorRunner
 {
+    /**
+     * @var iterable
+     */
     private $processors;
 
+    /**
+     * ProcessorRunner constructor.
+     * @param iterable $processors
+     */
     public function __construct(iterable $processors)
     {
         $this->processors = $processors;
     }
+
+    /**
+     * @param Feed $feed
+     */
     public function processFeed(Feed $feed)
     {
         foreach ($this->processors as $processor) {

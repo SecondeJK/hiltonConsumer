@@ -9,31 +9,41 @@ use App\Entity\FourSquareLocation;
  */
 class FourSquareProcessor extends Processor
 {
+    /**
+     * @return string
+     */
     static function providerName(): string
     {
         return 'fsq';
     }
 
+    /**
+     * @return FourSquareLocation
+     */
     static function generateProcessorEntity()
     {
         return new FourSquareLocation();
     }
 
+    /**
+     * @param array $location
+     */
     public function persistEntityFromLocation(array $location): void
     {
         $entity = self::generateProcessorEntity();
-        $entity->setName($location['name']);
-        $entity->setCreated(new \DateTime($this->dateCreated));
-        $entity->setUpdated(new \DateTime($this->dateUpdated));
-        $entity->setLatitude($location['latitude']);
-        $entity->setLongitude($location['longitude']);
-        $entity->setLocationName($this->feed->getLocationName());
-        $entity->setAddress($location['address']);
-        $entity->setCategory($location['category']);
-        $entity->setLink($location['link']);
-        $entity->setRating($location['rating']);
-        $entity->setPrice($location['price']);
-        $entity->setImage($location['image']);
+        $entity->setName($location['name'])
+            ->setCreated(new \DateTime($this->dateCreated))
+            ->setUpdated(new \DateTime($this->dateUpdated))
+            ->setLatitude($location['latitude'])
+            ->setLongitude($location['longitude'])
+            ->setLocationName($this->feed->getLocationName())
+            ->setAddress($location['address'])
+            ->setCategory($location['category'])
+            ->setLink($location['link'])
+            ->setRating($location['rating'])
+            ->setPrice($location['price'])
+            ->setImage($location['image']);
+
         $this->em->persist($entity);
     }
 }

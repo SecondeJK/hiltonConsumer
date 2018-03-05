@@ -68,6 +68,10 @@ abstract class Processor implements ProcessorInterface
         $this->em = $em;
     }
 
+    /**
+     * @param Feed $feed
+     * @throws \ErrorException
+     */
     public function process(Feed $feed): void
     {
         $this->feed = $feed;
