@@ -71,7 +71,13 @@ class OutputController extends Controller
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
         $serializer = $this->get('jms_serializer');
-        $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
+
+        try {
+            $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
+        } catch (\Exception $e) {
+            return new Response('Error in content request', Response::HTTP_BAD_REQUEST);
+        }
+
         $response->setContent($this->serializerResponseData);
         $response->setStatusCode($this->assertApiRequestStatusCode());
 
@@ -124,6 +130,7 @@ class OutputController extends Controller
 
     /**
      * Attempts to apply a sort, uncaught errors thrown if fails validation
+     * Pretty basic stuff, but you get the idea. All these ifs need to be moved to lower logic
      *
      * @throws \ErrorException
      */
