@@ -9,6 +9,7 @@ build:
 
 start:
 	@docker-compose up --abort-on-container-exit
+	@bin/console server:start
 
 clean:
 	@-docker volume rm hilton_db
