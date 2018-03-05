@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class OutputController extends Controller
 {
+    const SORT_ASC = 'asc';
+    const SORT_DESC = 'desc';
+
     /**
      * @var Iterable
      */
@@ -36,13 +39,29 @@ class OutputController extends Controller
     }
 
     /**
+     * @var string $sort
+     * Takes the form of name field : direction
+     */
+    private $sort;
+
+    /**
       * @Route("/api/v1/all")
       */
     public function outputAllAction(Request $request)
     {
         $this->serializerResponseData = [];
 
+        // Add sort to class, remove from request query
+        if ($request->query->get('sortBy')) {
+            $this->sort = $request->get('sortBy');
+            $request->query->remove('sortBy');
+        }
+
         $this->buildOutputFromQueryParameters($request->query);
+
+        if ($this->sort) {
+            $this->applySort();
+        }
 
         return $this->renderResponse();
     }
@@ -51,20 +70,26 @@ class OutputController extends Controller
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
+        $serializer = $this->get('jms_serializer');
+        $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
         $response->setContent($this->serializerResponseData);
         $response->setStatusCode($this->assertApiRequestStatusCode());
+
         return $response;
     }
 
     /**
-     * We set HTTP headers in here and not in the serialized meta response as
-     * that makes no sense to 200 with a 403 return
+     * We set HTTP headers in here and not in the serialized meta response as that makes no sense
+     *
+     * If you return an HTTP status code of 200 with an error code,
+     * then Chuck Norris will roundhouse your door in, destroy your computer, instantly 35-pass wipe your backups,
+     * cancel your Dropbox account, and block you from GitHub. -Phil Sturgeon
      *
      * @return int
      */
     protected function assertApiRequestStatusCode()
     {
-        // TODO: logic
+        // Placeholder to assert response code
         return Response::HTTP_OK;
     }
 
@@ -95,8 +120,40 @@ class OutputController extends Controller
                 }
             }
         }
+    }
 
-        $serializer = $this->get('jms_serializer');
-        $this->serializerResponseData = $serializer->serialize($this->serializerResponseData, 'json');
+    /**
+     * Attempts to apply a sort, uncaught errors thrown if fails validation
+     *
+     * @throws \ErrorException
+     */
+    protected function applySort()
+    {
+        // strtolower so we can discard case;
+        $sortKeys = strtolower($this->sort);
+        $sortKeys = explode(':', $sortKeys);
+        $acceptableSorts = [self::SORT_ASC, self::SORT_DESC];
+
+        if (count($sortKeys) !== 2) {
+            throw new \ErrorException('Error in sort keys, please check fieldnames and direction');
+        }
+
+        if ($sortKeys[0] !== 'name') {
+            throw new \ErrorException('Error in sort keys, only name can be used');
+        }
+
+        if (!in_array($sortKeys[1], $acceptableSorts)) {
+            throw new \ErrorException('Error in sort keys - please specify asc or desc');
+        }
+
+        if ($sortKeys[1] === self::SORT_DESC) {
+            usort($this->serializerResponseData, function ($a, $b) {
+                return strtolower($a->getName()) < strtolower($b->getName());
+            });
+        } else {
+            usort($this->serializerResponseData, function ($a, $b) {
+                return strtolower($a->getName()) > strtolower($b->getName());
+            });
+        }
     }
 }
