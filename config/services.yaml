@@ -48,7 +48,7 @@ services:
         autoconfigure: false
         public: true
         abstract:  true
-        arguments: ['%app.baseurl%', '@App\ApiClient\ApiClient', '%app.authtoken%', '@doctrine.orm.entity_manager']
+        arguments: ['%app.baseurl%', '@App\ApiClient\ApiClient', '%app.authtoken%', '@doctrine.orm.entity_manager', '@logger']
 
     App\Processor\ProcessorRunner:
         autowire: false

@@ -16,4 +16,4 @@
 ###< symfony/phpunit-bridge ###
 
 ### mysql
-/mysql/*
+/mysql/

@@ -6,6 +6,7 @@ use App\ApiClient\ApiClient;
 use App\Entity\Feed;
 use App\Interfaces\ProcessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * @package App\Processor
@@ -48,24 +49,31 @@ abstract class Processor implements ProcessorInterface
     protected $em;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * Processor constructor.
      * @param string $baseUrl
      * @param ApiClient $apiClient
      * @param string $authtoken
      */
-    public function __construct(string $baseUrl, ApiClient $apiClient, string $authtoken, EntityManagerInterface $em)
+    public function __construct(string $baseUrl, ApiClient $apiClient, string $authtoken, EntityManagerInterface $em, LoggerInterface $logger)
     {
         $this->apiClient = $apiClient;
         $this->baseUrl = $baseUrl;
         $this->authToken = $authtoken;
+        $this->logger = $logger;
         $this->em = $em;
     }
 
     public function process(Feed $feed): void
     {
         $this->feed = $feed;
+        $this->logger->info('Processing Feed: ' . $feed->getLocationName() . " " . $feed->getProvider());
         $result = $this->apiClient->makeApiCall($this->resolveFullUrl());
-
+        $this->logger->info("Made API Call, result: " . var_dump($result));
         $metaLocation = array_column($result, 'location');
         $metaLocation = array_shift($metaLocation);
         $this->dateCreated = $metaLocation['created'];
