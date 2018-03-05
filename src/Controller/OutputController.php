@@ -81,6 +81,10 @@ class OutputController extends Controller
         $response->setContent($this->serializerResponseData);
         $response->setStatusCode($this->assertApiRequestStatusCode());
 
+        // Use basic symfony built in cache control
+        $response->setSharedMaxAge(900);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+
         return $response;
     }
 
