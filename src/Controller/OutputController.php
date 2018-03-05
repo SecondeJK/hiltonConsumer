@@ -66,7 +66,7 @@ class OutputController extends Controller
         return $this->renderResponse();
     }
 
-    protected function renderResponse()
+    public function renderResponse()
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'application/json');
